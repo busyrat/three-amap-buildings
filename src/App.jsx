@@ -33,10 +33,10 @@ function App() {
               [114.51,30.54],
               [114.49,30.55]
             ]} />
-            <Road type="城市主干道" />
+            {/* <Road type="城市主干道" /> */}
             <ThreeLayer>
               {
-                (({ scene }) => scene && scene.add && <GLTF scene={scene} position={center}/>)
+                (({ scene }) => <GLTF scene={scene} position={center}/>)
               }
               {/* {
                 ({gl, map, camera, scene}) => {
