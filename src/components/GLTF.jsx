@@ -22,8 +22,8 @@ export function GLTF({ scene, position }) {
     // Load a glTF resource
     loader.load(
       // resource URL
-      'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
-      // '/crane.glb',
+      // 'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
+      '/crane.glb',
       // called when the resource is loaded
       function ( gltf ) {
         for (let i = 0; i < positions.length; i++) {

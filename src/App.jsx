@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState, version } from 'react'
-import { Canvas, useFrame, createRoot } from '@react-three/fiber'
+// import React, { useEffect, useRef, useState, version } from 'react'
+// import { Canvas, useFrame, createRoot } from '@react-three/fiber'
 import { APILoader, Map, Provider } from '@uiw/react-amap';
 import { B3 } from './components/B3'
-import { Box } from './components/Box'
+// import { Box } from './components/Box'
 import { Buildings } from './components/Buildings'
-import { Road } from './components/Road'
-import { ThreeLayer } from './components/ThreeLayer'
-import { GLTF } from './components/GLTF';
-
+// import { Road } from './components/Road'
+// import { ThreeLayer } from './components/ThreeLayer'
+// import { GLTF } from './components/GLTF';
+import { AMapThreeLayer } from './components/AMapThreeLayer';
 
 function App() {
-  const center = [114.501707, 30.554956] // b3
+  const center = [114.50170, 30.55495] // b3
   return (
     <>
       <APILoader 
@@ -33,24 +33,8 @@ function App() {
               [114.51,30.54],
               [114.49,30.55]
             ]} />
-            <Road type="城市主干道" />
-            <ThreeLayer>
-              {
-                (({ scene }) => scene && scene.add && <GLTF scene={scene} position={center}/>)
-              }
-              {/* {
-                ({gl, map, camera, scene}) => {
-                  if (!gl || !map) return
-                  const customCoords = map.customCoords
-                  const position = customCoords.lngLatsToCoords(center)
-                  return <Canvas>
-                    <ambientLight />
-                    <Box position={[-1.2, 0, 0]} />
-                    <Box position={[1.2, 0, 0]} />
-                  </Canvas>
-                }
-              } */}
-            </ThreeLayer>
+            {/* <Road type="城市主干道" /> */}
+            <AMapThreeLayer></AMapThreeLayer>
           </Map>
         </Provider>
       </APILoader>
