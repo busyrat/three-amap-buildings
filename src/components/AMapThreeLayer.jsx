@@ -1,59 +1,64 @@
-import { useEffect } from "react";
-import { useMapContext } from '@uiw/react-amap'
+import { useEffect, useState, Children, cloneElement, isValidElement, Fragment } from "react";
 import { AmbientLight } from 'three'
-import {ThreeLayer, ThreeGltf} from '@amap/three-layer'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { ThreeLayer, ThreeGltf } from '../three-layer/src/'
+import { useMapContext } from './AMap'
+import POS from '../const'
 
-export function AMapThreeLayer ({ map, children }) {
+export function AMapThreeLayer ({ children }) {
+  const { map } = useMapContext()
+  const [layer, setLayer] = useState()
+
+  const childs = Children.toArray(children)
+
   useEffect(() => {
     if (!map) return
-    console.log(map);
-    const layer = new ThreeLayer(map)
-    layer.on('complete', () => {
-      const light = new AmbientLight('#ffffff', 1);
-      layer.add(light)
-      // const threeGltf = new ThreeGltf(layer, {
-      //   url: 'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
-      //   position: [[114.501707, 30.554956]],
-      //   scale: 100,
-      //   rotation: { x:90, y:0, z:0 },
-      //   onLoaded(object) {
-      //     // object.children[0].scale.set(1, 1, 1)
-      //     object.position.set(0, 0, 0)
-      //   }
-      // })
 
-      // console.log(layer, gltf)
-      const loader = new GLTFLoader();
-      // 数据转换工具
-      const customCoords = map.customCoords
-      // 数据使用转换工具进行转换，这个操作必须要提前执行（在获取镜头参数 函数之前执行），否则将会获得一个错误信息。
-      const positions = customCoords.lngLatsToCoords([[114.501707, 30.554956]])
+    // 数据转换工具
+    const customCoords = map.customCoords
+    // 数据使用转换工具进行转换，这个操作必须要提前执行（在获取镜头参数 函数之前执行），否则将会获得一个错误信息。
+    const positions = customCoords.lngLatsToCoords([POS.bigui])
+    console.log(positions);
+
     
-      // // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-      // const dracoLoader = new DRACOLoader();
-      // dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
-      // loader.setDRACOLoader( dracoLoader );
-    
-      // Load a glTF resource
-      loader.load(
-        // resource URL
-        'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
-        // '/crane.glb',
-        // called when the resource is loaded
-        function ( gltf ) {
-          for (let i = 0; i < positions.length; i++) {
-            const d = positions[i];
-            console.log(d);
-            layer.add( gltf.scene );
-            gltf.scene.position.setX(d[0]);
-            gltf.scene.position.setY(d[1]);
-            gltf.scene.rotation.set(Math.PI / 2, 0, 0);
-            gltf.scene.children[0].scale.set(1, 1, 1);
-          }
+    const threeLayer = new ThreeLayer(map)
+    threeLayer.on('complete', () => {
+      setLayer(threeLayer)
+      
+      const light = new AmbientLight('#ffffff', 1);
+      threeLayer.add(light)
+
+      const threeGltf = new ThreeGltf(threeLayer, {
+        // url: 'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
+        url: '/crane.glb',
+        position: [0, 0],
+        scale: 50,
+        rotation: { x:90, y:0, z:0 },
+        onLoaded(object) {
+          // 位置计算错误，修正
+          object.position.set(...positions[0], -30)
+          console.log('ThreeGltf', object);
         }
-      )
+      })
+
     })
   }, [map])
-  return children
+
+
+  return (<Fragment>
+    {
+      layer && childs.map((child, key) => {
+        if (!isValidElement(child)) return null;
+        if (typeof child === 'string') {
+          return cloneElement(<Fragment>{child}</Fragment>, { key });
+        }
+        if (child.type && typeof child.type === 'string') {
+          return cloneElement(child, { key });
+        }
+        return cloneElement(child, {
+          ...child.props,
+          layer
+        });
+      })
+    }
+  </Fragment>)
 }

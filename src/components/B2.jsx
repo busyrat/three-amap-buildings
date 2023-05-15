@@ -1,7 +1,7 @@
-import { useMapContext } from './AMap'
+import { useMapContext } from '@uiw/react-amap'
 import { useEffect } from 'react'
 
-export function B3() {
+export function B2() {
   const { map } = useMapContext()
 
   function generateBuildingLayer() {
