@@ -5,7 +5,7 @@ import { B3 } from './components/B3'
 import { B2 } from './components/B2'
 // import { Box } from './components/Box'
 import { Buildings } from './components/Buildings'
-// import { Road } from './components/Road'
+import { Road } from './components/Road'
 // import { ThreeLayer } from './components/ThreeLayer'
 // import { GLTF } from './components/GLTF';
 import { AMapThreeLayer } from './components/AMapThreeLayer';
@@ -27,6 +27,7 @@ function App() {
           [114.51,30.54],
           [114.49,30.55]
         ]} />
+        <Road type="城市主干道" />
       </AMap>
     </>
   )
