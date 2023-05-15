@@ -1,5 +1,6 @@
 import gcoord from 'gcoord'
 import { geojson } from '../../public/wuhan2'
+import { mock } from '../../public/demo'
 gcoord.transform(geojson, gcoord.WGS84, gcoord.GCJ02);
 import { useMapContext } from './AMap'
 import booleanContains from '@turf/boolean-contains'
@@ -40,7 +41,7 @@ export function Buildings({ min, area }) {
       hasSide: true
     });
     // 创建数据源
-    const dataSource = new Loca.GeoJSONSource({ data: geojsonData });
+    const dataSource = new Loca.GeoJSONSource({ data: mock });
 
     // 图层添加数据
     polygonLayer.setSource(dataSource);
@@ -53,10 +54,10 @@ export function Buildings({ min, area }) {
       sideBottomColor : 'rgba(27, 63, 138, 1)',
       unit: 'meter',
       height: function (index, feature) {
-        return feature.properties.Elevation
+        return feature.properties.Elevation || feature.properties.height
       },
       textureSize: function(index, feature) {
-        const size = feature.properties.Elevation
+        const size = feature.properties.Elevation || feature.properties.height
         return [size, size]
       },
     })

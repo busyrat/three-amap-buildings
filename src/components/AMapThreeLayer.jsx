@@ -16,7 +16,7 @@ export function AMapThreeLayer ({ children }) {
     // 数据转换工具
     const customCoords = map.customCoords
     // 数据使用转换工具进行转换，这个操作必须要提前执行（在获取镜头参数 函数之前执行），否则将会获得一个错误信息。
-    const positions = customCoords.lngLatsToCoords([POS.bigui])
+    const positions = customCoords.lngLatsToCoords([POS.mockCenter])
     console.log(positions);
 
     
@@ -31,11 +31,11 @@ export function AMapThreeLayer ({ children }) {
         // url: 'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf',
         url: '/crane.glb',
         position: [0, 0],
-        scale: 50,
+        scale: 70,
         rotation: { x:90, y:0, z:0 },
         onLoaded(object) {
           // 位置计算错误，修正
-          object.position.set(...positions[0], -30)
+          object.position.set(...positions[0], -40)
           console.log('ThreeGltf', object);
         }
       })

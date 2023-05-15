@@ -15,7 +15,7 @@ import { AMapGltf } from './components/AMapGltf';
 import POS from './const'
 
 function App() {
-  const center = POS.bigui // 碧桂园
+  const center = POS.mockCenter // 碧桂园
   return (
     <>
       <AMap center={center}>
